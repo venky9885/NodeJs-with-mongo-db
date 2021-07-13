@@ -1,44 +1,57 @@
-import http from "http"
+import express, { Request, Response } from "express";
+import { Mongoose } from "mongoose";
+import mongoose from "mongoose";
+//import { postDatatoMongoDB } from "./database/data";
+//import { mongoDBConnection } from "./database/data";
 
+import { router } from "./routes/routes";
+const app = express()
 
+mongoose.connect(
 
-http.createServer(
-    function (req, res) {
-        res.write("Api is running")
-        res.end()
+    process.env.MONGODB_URL as string,
+    {
+        useUnifiedTopology: true,
+        useNewUrlParser: true,
+    },
+    () => {
+        console.log("Db connected !");
     }
-
-
-).listen(8080);
+)
+app.use(express.urlencoded({ extended: false }));
+//mongoDBConnection();
+//postDatatoMongoDB();
+app.use("/", router);
+app.use(express.json());
 /*
+//Basic Express Server
+app.get("/", (req: Request, res: Response) => {
 
-http.createServer(
-    function (req, res) {
-        res.writeHead(200, {
-            "content-type": "text/html"
-        }),
-            res.write("Html Is Rocking");
-        res.end();
-    }
+    // res.send("Api is runn58ing");
+    const data = req.url;
+    res.status(200).json({
+        message: data
+        //message: "Api is Running data"
+    });
 
+});
 
-).listen(8000);
+//route 2 abt
+app.get("/abt", (req: Request, res: Response) => {
 
-http.createServer(
-    function (req, res) {
+    // res.send("Api is runn58ing");
+    const data = req.url;
+    res.status(200).json({
+        message: data
+        //message: "Api is Running data"
+    });
 
-        res.write(req.url);
-        res.end();
-    }
-
-
-).listen(8000);
+});
 */
+// server port 8080
+app.listen(8080, () => {
+    console.log("Server is Rocking ");
+});
 
 
-
-
-//console.log("hello gfjggh");
-//http://localhost:8080/
-//tsc.cmd --init
-// for riunning server npm run dev
+//Routes in Express Js
